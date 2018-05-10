@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Session Words</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'session_words/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'session_words/css/main.css' %}">
+</head>
+<body>
+    <div class="wrapper">        
+        <form action="/session_words/process" method="POST" class="add-word">
+            {% csrf_token %}
+            <div class="form-group">
+                <h1>Add a new word</h1>
+                <input type="text" name="word" class="form-control" value="">
+            </div>
+            <p>Choose a color</p>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="color"  value="red" checked>
+                <label class="form-check-label" for="red">
+                  Red
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="color"  value="green">
+                <label class="form-check-label" for="green">
+                  Green
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="color"  value="blue">
+                <label class="form-check-label" for="blue">
+                  Blue
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="font" value="1">
+                <label class="form-check-label" for="font">
+                  show in BIG fonts!
+                </label>
+            </div>
+            <button type="submit" class="btn btn-success float-right">Add to Session</button>
+        </form><div
+         class="words">
+            <form action="/session_words/clear" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger float-right">Clear Session</button>
+            </form>
+            {% for key in request.session.content %}
+            <p><span class="{{key.font}} {{key.color}}">{{key.word}}</span> - {{key.time}}</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
